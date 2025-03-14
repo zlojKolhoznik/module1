@@ -21,16 +21,19 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Restore Dependencies
+        working-directory: ./src
         run: dotnet restore
 
       - name: Run Code Formatting Check
+        working-directory: ./src
         run: dotnet format --verify-no-changes
 
       - name: Run Linter (StyleCop)
-        run: dotnet build /warnaserror
+        working-directory: ./src
+        run: dotnet build
 
   test:
     name: Run Unit Tests
@@ -43,12 +46,14 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Restore Dependencies
+        working-directory: ./src
         run: dotnet restore
 
       - name: Run Tests with Coverage
+        working-directory: ./src
         run: dotnet test --collect:"XPlat Code Coverage"
 
   api-tests:
@@ -60,7 +65,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Postman Tests
-        uses: matt-ball/newman-action@v1
+        uses: matt-ball/newman-action@master
         with:
           collection: tests/postman_collection.json
           environment: tests/postman_environment.json
