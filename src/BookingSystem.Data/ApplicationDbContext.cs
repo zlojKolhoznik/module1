@@ -22,6 +22,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// </summary>
     public required DbSet<Room> Rooms { get; set; }
 
+    /// <summary>
+    /// Gets or sets the bookings database set.
+    /// </summary>
+    public required DbSet<Booking> Bookings { get; set; }
+
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,6 +43,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.HasOne(r => r.Hotel)
                 .WithMany(h => h.Rooms)
                 .HasForeignKey(r => r.HotelId);
+            e.HasMany(r => r.Bookings)
+                .WithOne(b => b.Room)
+                .HasForeignKey(b => b.RoomId);
         });
     }
 
@@ -52,6 +60,25 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.HasMany(h => h.Rooms)
                 .WithOne(r => r.Hotel)
                 .HasForeignKey(r => r.HotelId);
+        });
+    }
+
+    private static void ConfigureBookingEntity(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Booking>(e =>
+        {
+            e.HasKey(b => b.Id);
+            e.Property(b => b.TenantName).IsRequired()
+                .HasMaxLength(100);
+            e.Property(b => b.TenantPassportNumber).IsRequired()
+                .HasMaxLength(20);
+            e.Property(b => b.TenantPhoneNumber).IsRequired()
+                .HasMaxLength(20);
+            e.Property(b => b.Start).IsRequired();
+            e.Property(b => b.End).IsRequired();
+            e.HasOne(b => b.Room)
+                .WithMany()
+                .HasForeignKey(b => b.RoomId);
         });
     }
 }

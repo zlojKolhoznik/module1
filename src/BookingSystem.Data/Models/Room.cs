@@ -38,4 +38,9 @@ public class Room
     /// Gets or sets hotel the room belongs to.
     /// </summary>
     public Hotel? Hotel { get; set; }
+
+    /// <summary>
+    /// Gets or sets bookings made for the room.
+    /// </summary>
+    public List<Booking> Bookings { get; set; } = [];
 }
