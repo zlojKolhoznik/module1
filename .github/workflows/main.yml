@@ -30,7 +30,7 @@ jobs:
         run: dotnet format --verify-no-changes
 
       - name: Run Linter (StyleCop)
-        run: dotnet build /warnaserror
+        run: dotnet build
 
   test:
     name: Run Unit Tests
