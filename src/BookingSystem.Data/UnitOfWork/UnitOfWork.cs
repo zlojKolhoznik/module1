@@ -6,17 +6,20 @@ namespace BookingSystem.Data.UnitOfWork;
 
 using BookingSystem.Data.Abstractions;
 using BookingSystem.Data.Repositories.Abstractions;
+using BookingSystem.Data.UnitOfWork.Abstractions;
 
 /// <summary>
 /// Unit of work class.
 /// </summary>
 /// <param name="hotels">Hotels repository.</param>
 /// <param name="rooms">Rooms repository.</param>
+/// <param name="bookings">Bookings repository.</param>
 /// <param name="context">Application database context.</param>
 public class UnitOfWork(
     IHotelsRepository hotels,
     IRoomsRepository rooms,
-    IApplicationDbContext context)
+    IBookingRepository bookings,
+    IApplicationDbContext context) : IUnitOfWork
 {
     /// <summary>
     /// Gets hotels repository.
@@ -27,6 +30,11 @@ public class UnitOfWork(
     /// Gets rooms repository.
     /// </summary>
     public IRoomsRepository Rooms => rooms;
+
+    /// <summary>
+    /// Gets bookings repository.
+    /// </summary>
+    public IBookingRepository Bookings => bookings;
 
     /// <summary>
     /// Saves changes to the database.
