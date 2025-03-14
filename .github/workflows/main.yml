@@ -24,12 +24,15 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore Dependencies
+        working-directory: ./src
         run: dotnet restore
 
       - name: Run Code Formatting Check
+        working-directory: ./src
         run: dotnet format --verify-no-changes
 
       - name: Run Linter (StyleCop)
+        working-directory: ./src
         run: dotnet build
 
   test:
@@ -46,9 +49,11 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore Dependencies
+        working-directory: ./src
         run: dotnet restore
 
       - name: Run Tests with Coverage
+        working-directory: ./src
         run: dotnet test --collect:"XPlat Code Coverage"
 
   api-tests:
