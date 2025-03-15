@@ -1,13 +1,15 @@
-// <copyright file="Room.cs" company="PlaceholderCompany">
+// <copyright file="UpdateRoomDto.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BookingSystem.Data.Models;
+namespace BookingSystem.Core.Models.Room;
+
+using BookingSystem.Data.Models;
 
 /// <summary>
-/// Represents a room.
+/// Data transfer object for updating a room.
 /// </summary>
-public class Room
+public class UpdateRoomDto
 {
     /// <summary>
     /// Gets or sets unique room identifier.
@@ -28,19 +30,4 @@ public class Room
     /// Gets or sets room capacity.
     /// </summary>
     public RoomCapacity Capacity { get; set; }
-
-    /// <summary>
-    /// Gets or sets id of the hotel the room belongs to.
-    /// </summary>
-    public Guid HotelId { get; set; }
-
-    /// <summary>
-    /// Gets or sets hotel the room belongs to.
-    /// </summary>
-    public Hotel? Hotel { get; set; }
-
-    /// <summary>
-    /// Gets or sets bookings made for the room.
-    /// </summary>
-    public List<Booking> Bookings { get; set; } = [];
 }
