@@ -38,4 +38,9 @@ public class BriefBookingDto
     /// Gets or sets the booking end date.
     /// </summary>
     public DateTime End { get; set; }
+
+    /// <summary>
+    /// Gets or sets the room id.
+    /// </summary>
+    public Guid RoomId { get; set; }
 }
