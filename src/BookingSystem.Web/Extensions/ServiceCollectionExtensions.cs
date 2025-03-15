@@ -62,7 +62,7 @@ public static class ServiceCollectionExtensions
     /// <returns><paramref name="services"/>.</returns>
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(MappingProfile).Assembly);
+        services.AddAutoMapper(options => options.AddProfile<MappingProfile>());
 
         return services;
     }
