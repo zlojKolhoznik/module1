@@ -59,7 +59,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.Property(h => h.Address).IsRequired();
             e.HasMany(h => h.Rooms)
                 .WithOne(r => r.Hotel)
-                .HasForeignKey(r => r.HotelId);
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 
@@ -78,7 +79,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.Property(b => b.End).IsRequired();
             e.HasOne(b => b.Room)
                 .WithMany()
-                .HasForeignKey(b => b.RoomId);
+                .HasForeignKey(b => b.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
