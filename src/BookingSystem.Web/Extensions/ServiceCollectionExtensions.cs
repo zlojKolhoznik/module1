@@ -4,6 +4,7 @@
 
 namespace BookingSystem.Web.Extensions;
 
+using BookingSystem.Core.Profiles;
 using BookingSystem.Core.Services;
 using BookingSystem.Core.Services.Abstractions;
 using BookingSystem.Data;
@@ -61,7 +62,7 @@ public static class ServiceCollectionExtensions
     /// <returns><paramref name="services"/>.</returns>
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(Program).Assembly);
+        services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
         return services;
     }
