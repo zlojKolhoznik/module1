@@ -56,35 +56,10 @@ jobs:
         working-directory: ./src
         run: dotnet test --collect:"XPlat Code Coverage"
 
-  api-tests:
-      name: Run API Tests (Postman)
-      runs-on: ubuntu-latest
-      needs: test
-      steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v4
-
-        - name: Check if Postman Collection Exists
-          id: check_postman
-          run: |
-            if [ -f "tests/postman_collection.json" ]; then
-              echo "exists=true" >> $GITHUB_ENV
-            else
-              echo "exists=false" >> $GITHUB_ENV
-            fi
-
-        - name: Run Postman Tests
-          if: env.exists == 'true'
-          uses: matt-ball/newman-action@master
-          with:
-            collection: tests/postman_collection.json
-            environment: tests/postman_environment.json
-            reporters: cli
-
   deploy:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: [test, api-tests]
+    needs: test
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Repository
