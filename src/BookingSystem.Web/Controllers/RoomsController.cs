@@ -91,7 +91,7 @@ public class RoomsController(IRoomsService service) : ControllerBase
     /// <param name="hotelId">Rooms hotel id.</param>
     /// <param name="room">Room creation model.</param>
     /// <returns>400 Bad Request if <paramref name="hotelId"/>
-    /// and <paramref name="room"/>.HotelId do not match,
+    /// and <paramref name="room"/>.HotelId do not match or hotel does not exist,
     /// or 200 OK if room added successfully.</returns>
     [HttpPost]
     public async Task<ActionResult> AddRoom(Guid hotelId, [FromBody] CreateRoomDto room)
@@ -101,7 +101,15 @@ public class RoomsController(IRoomsService service) : ControllerBase
             return BadRequest("Hotel ID in the URL and in the body do not match.");
         }
 
-        await service.AddRoomAsync(room);
+        try
+        {
+            await service.AddRoomAsync(room);
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
+
         return Ok();
     }
 

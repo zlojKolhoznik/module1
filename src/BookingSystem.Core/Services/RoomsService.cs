@@ -21,6 +21,15 @@ public class RoomsService(IUnitOfWork unitOfWork, IMapper mapper) : IRoomsServic
     /// <inheritdoc/>
     public async Task AddRoomAsync(CreateRoomDto room)
     {
+        try
+        {
+            var hotel = await unitOfWork.Hotels.GetHotelByIdAsync(room.HotelId);
+        }
+        catch (ArgumentException)
+        {
+            throw new ArgumentException("Hotel does not exist.");
+        }
+
         var roomEntity = mapper.Map<Room>(room);
         await unitOfWork.Rooms.AddRoomAsync(roomEntity);
         await unitOfWork.SaveChangesAsync();
