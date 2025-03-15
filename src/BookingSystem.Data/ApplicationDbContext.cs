@@ -79,7 +79,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.Property(b => b.Start).IsRequired();
             e.Property(b => b.End).IsRequired();
             e.HasOne(b => b.Room)
-                .WithMany()
+                .WithMany(r => r.Bookings)
                 .HasForeignKey(b => b.RoomId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
