@@ -21,14 +21,7 @@ public class BookingService(IUnitOfWork unitOfWork, IMapper mapper) : IBookingSe
     /// <inheritdoc/>
     public async Task AddBookingAsync(CreateBookingDto booking)
     {
-        var room = await unitOfWork.Rooms.GetRoomByIdAsync(booking.RoomId)
-            ?? throw new ArgumentException("Room does not exist.");
-
-        if (room.Bookings.Any(b => b.Start <= booking.End
-                              && b.End >= booking.Start))
-        {
-            throw new ArgumentException("Room is already booked for specified period.");
-        }
+        await EnsureRoomIsAvailable(booking.RoomId, booking.Start, booking.End);
 
         var bookingEntity = mapper.Map<Booking>(booking);
         await unitOfWork.Bookings.AddAsync(bookingEntity);
@@ -64,9 +57,25 @@ public class BookingService(IUnitOfWork unitOfWork, IMapper mapper) : IBookingSe
             throw new ArgumentException("ID of the booking does not match the ID of the booking to be updated.");
         }
 
+        await EnsureRoomIsAvailable(booking.RoomId, booking.Start, booking.End);
+
         var bookingEntity = await unitOfWork.Bookings.GetByIdAsync(id);
         mapper.Map(booking, bookingEntity);
         await unitOfWork.Bookings.UpdateAsync(bookingEntity);
         await unitOfWork.SaveChangesAsync();
+    }
+
+    private async Task EnsureRoomIsAvailable(
+        Guid roomId,
+        DateTime start,
+        DateTime end)
+    {
+        var room = await unitOfWork.Rooms.GetRoomByIdAsync(roomId)
+                    ?? throw new ArgumentException("Room does not exist.");
+
+        if (room.Bookings.Any(b => b.Start <= end && b.End >= start))
+        {
+            throw new ArgumentException("Room is already booked for specified period.");
+        }
     }
 }

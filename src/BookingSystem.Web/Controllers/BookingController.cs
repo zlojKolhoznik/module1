@@ -90,7 +90,7 @@ public class BookingController(IBookingService service) : ControllerBase
     /// <param name="id">Booking id.</param>
     /// <param name="booking">Booking update model.</param>
     /// <returns>400 Bad Request if <paramref name="id"/> isn't equal to <paramref name="booking"/>.Id,
-    /// 404 Not Found if booking doens't exist,
+    /// 404 Not Found if booking doens't exist or room isn't available for specified period,
     /// or 204 No Content if update successfull.</returns>
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> UpdateBooking(Guid id, [FromBody] UpdateBookingDto booking)
