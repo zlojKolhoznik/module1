@@ -55,6 +55,18 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
+    /// Adds AutoMapper.
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/> instance.</param>
+    /// <returns><paramref name="services"/>.</returns>
+    public static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(Program).Assembly);
+
+        return services;
+    }
+
+    /// <summary>
     /// Adds domain services.
     /// </summary>
     /// <param name="services">Service collection to add services to.</param>

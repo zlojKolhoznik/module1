@@ -33,6 +33,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnModelCreating(modelBuilder);
         ConfigureHotelEntity(modelBuilder);
         ConfigureRoomEntity(modelBuilder);
+        ConfigureBookingEntity(modelBuilder);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        Database.Migrate();
     }
 
     private static void ConfigureRoomEntity(ModelBuilder modelBuilder)
@@ -59,7 +67,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.Property(h => h.Address).IsRequired();
             e.HasMany(h => h.Rooms)
                 .WithOne(r => r.Hotel)
-                .HasForeignKey(r => r.HotelId);
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 
@@ -77,8 +86,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.Property(b => b.Start).IsRequired();
             e.Property(b => b.End).IsRequired();
             e.HasOne(b => b.Room)
-                .WithMany()
-                .HasForeignKey(b => b.RoomId);
+                .WithMany(r => r.Bookings)
+                .HasForeignKey(b => b.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddDocumentation();
 builder.Services.AddDataAccess(builder.Configuration);
 builder.Services.AddDomainServices();
+builder.Services.AddAutoMapper();
 
 var app = builder.Build();
 
