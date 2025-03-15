@@ -43,6 +43,7 @@ public class BookingServiceTests
         };
         _mapperMock.Setup(m => m.Map<Booking>(createBookingDto)).Returns(booking);
         _unitOfWorkMock.Setup(u => u.Bookings.AddAsync(booking)).Verifiable();
+        _unitOfWorkMock.Setup(u => u.Rooms.GetRoomByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new Room());
 
         // Act
         await _bookingService.AddBookingAsync(createBookingDto);
@@ -164,6 +165,7 @@ public class BookingServiceTests
             TenantPhoneNumber = "555-1234",
         };
         _unitOfWorkMock.Setup(u => u.Bookings.GetByIdAsync(bookingId)).ReturnsAsync(booking);
+        _unitOfWorkMock.Setup(u => u.Rooms.GetRoomByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new Room());
 
         // Act
         await _bookingService.UpdateBookingAsync(bookingId, updateBookingDto);
