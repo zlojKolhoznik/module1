@@ -46,6 +46,7 @@ public class RoomsServiceTests
         };
         _mapperMock.Setup(m => m.Map<Room>(createRoomDto)).Returns(room);
         _unitOfWorkMock.Setup(u => u.Rooms.AddRoomAsync(room)).Verifiable();
+        _unitOfWorkMock.Setup(u => u.Hotels.GetHotelByIdAsync(createRoomDto.HotelId));
 
         // Act
         await _roomsService.AddRoomAsync(createRoomDto);
