@@ -21,6 +21,15 @@ public class BookingService(IUnitOfWork unitOfWork, IMapper mapper) : IBookingSe
     /// <inheritdoc/>
     public async Task AddBookingAsync(CreateBookingDto booking)
     {
+        var room = await unitOfWork.Rooms.GetRoomByIdAsync(booking.RoomId)
+            ?? throw new ArgumentException("Room does not exist.");
+
+        if (room.Bookings.Any(b => b.Start <= booking.End
+                              && b.End >= booking.Start))
+        {
+            throw new ArgumentException("Room is already booked for specified period.");
+        }
+
         var bookingEntity = mapper.Map<Booking>(booking);
         await unitOfWork.Bookings.AddAsync(bookingEntity);
         await unitOfWork.SaveChangesAsync();
