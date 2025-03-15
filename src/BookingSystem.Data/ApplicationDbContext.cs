@@ -36,6 +36,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         ConfigureBookingEntity(modelBuilder);
     }
 
+    /// <inheritdoc/>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        Database.Migrate();
+    }
+
     private static void ConfigureRoomEntity(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Room>(e =>
