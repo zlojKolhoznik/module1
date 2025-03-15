@@ -33,6 +33,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnModelCreating(modelBuilder);
         ConfigureHotelEntity(modelBuilder);
         ConfigureRoomEntity(modelBuilder);
+        ConfigureBookingEntity(modelBuilder);
     }
 
     private static void ConfigureRoomEntity(ModelBuilder modelBuilder)
